@@ -2,401 +2,924 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>EST Writing Quiz</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>EST I - Writing Quiz</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: pink;
+    * {
       margin: 0;
       padding: 0;
-    }
-
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      width: 100%;
-    }
-
-    .quiz-panel {
-      background: #fff;
-      width: 100%;
-      max-width: 525px;
-      margin: 24px auto;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      border-radius: 10px;
-      padding: 16px 12px 24px;
       box-sizing: border-box;
     }
 
-    .passage-text {
-      font-size: 15px;
-      color: #444;
-      background: #f7f7f7;
-      border-left: 4px solid #2ba9e1;
-      padding: 8px 12px;
-      margin-bottom: 18px;
-      white-space: pre-line;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    .question-number {
+    .main-container {
+      width: 100%;
+      max-width: 650px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .header p {
       font-size: 13px;
-      color: #1976d2;
+      opacity: 0.9;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 16px;
+    }
+
+    /* START SCREEN */
+    .start-screen {
+      text-align: center;
+    }
+
+    .start-screen h2 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 16px;
+    }
+
+    .start-screen .info {
+      font-size: 15px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 28px;
+      background: #f5f5f5;
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .start-screen .info strong {
+      color: #333;
+      display: block;
+      margin-top: 8px;
+    }
+
+    /* QUIZ SCREEN */
+    .quiz-screen {
+      display: none;
+    }
+
+    .timer-bar {
+      background: #fff3cd;
+      border-bottom: 2px solid #ffc107;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-weight: bold;
-      margin-bottom: 7px;
+    }
+
+    .timer-display {
+      font-size: 18px;
+      color: #d32f2f;
+      letter-spacing: 1px;
+    }
+
+    .question-counter {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .passage-box {
+      background: #f0f7ff;
+      border-left: 4px solid #667eea;
+      padding: 12px;
+      margin-bottom: 16px;
+      border-radius: 4px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 13px;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .question-header {
+      font-size: 12px;
+      color: #667eea;
+      font-weight: bold;
+      margin-bottom: 8px;
     }
 
     .question-text {
       font-size: 16px;
-      margin-bottom: 16px;
       color: #222;
+      margin-bottom: 16px;
+      line-height: 1.6;
     }
 
-    .options {
+    .options-group {
       display: flex;
       flex-direction: column;
-      gap: 9px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 16px;
     }
 
-    .option-btn {
-      text-align: left;
-      padding: 11px 13px;
-      border-radius: 4px;
-      border: 1px solid #d6dee5;
-      background: #fff;
+    .option-button {
+      padding: 14px 14px;
+      border: 2px solid #e0e0e0;
+      background: #ffffff;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 15px;
-      transition: background 0.2s, border-color 0.2s;
-      word-break: break-word;
+      text-align: left;
+      transition: all 0.25s ease;
     }
-    .option-btn:hover,
-    .option-btn:active {
-      background: #e8f5fd;
-      border-color: #2ba9e1;
+
+    .option-button:hover:not(:disabled) {
+      background: #f5f5f5;
+      border-color: #667eea;
     }
-    .option-btn.correct { background: #d1f2d7; border-color: #50c878;}
-    .option-btn.incorrect { background: #ffd6d6; border-color: #ff5f5f;}
-    .option-btn:disabled { opacity: 0.95; cursor: default;}
-    .feedback {
+
+    .option-button:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .option-button.correct {
+      background: #d4edda;
+      border-color: #28a745;
+      color: #155724;
+    }
+
+    .option-button.incorrect {
+      background: #f8d7da;
+      border-color: #f5222d;
+      color: #721c24;
+    }
+
+    .option-button:disabled {
+      cursor: default;
+      opacity: 0.95;
+    }
+
+    .feedback-message {
       min-height: 20px;
       font-size: 14px;
-      margin-bottom: 10px;
       font-weight: bold;
-    }
-    .feedback.correct { color: #167c32;}
-    .feedback.incorrect { color: #d32f2f;}
-    .footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      color: #666;
-    }
-    .next-btn, .start-btn {
-      padding: 10px 18px;
-      border-radius: 6px;
-      border: none;
-      background: #1976d2;
-      color: #fff;
-      cursor: pointer;
-      font-size: 15px;
-      margin-left: 12px;
-      margin-top: 10px;
-    }
-    .next-btn:disabled {background: #b0bec5; cursor: default;}
-    .start-btn {
-      width: 100%;
-      background: linear-gradient(90deg, #2ba9e1, #1976d2);
-      font-size: 18px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-      margin: 32px auto 0 auto;
-    }
-    .timer {
-      color: #d32f2f;
-      font-weight: bold;
-      font-size: 17px;
-      letter-spacing: 1px;
-      margin-right: 4px;
+      margin-bottom: 12px;
     }
 
-    @media (max-width: 600px) {
-      .quiz-panel {padding: 8px 2px 24px; max-width: 100vw;}
-      .start-btn { font-size: 17px; }
-      .passage-text { font-size: 14px; padding: 6px 7px;}
-      .options .option-btn { font-size: 14px;}
-      .question-text { font-size: 15px;}
+    .feedback-message.correct {
+      color: #28a745;
     }
-    .review-section {
-      margin-top: 15px;
+
+    .feedback-message.incorrect {
+      color: #f5222d;
     }
-    .review-block {
-      border: 1px solid #eee;
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      padding: 12px 18px;
+      border: none;
       border-radius: 8px;
-      margin: 12px 0;
-      padding: 12px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      flex: 1;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-start {
+      width: 100%;
+      padding: 16px;
+      font-size: 18px;
+      margin-top: 24px;
+    }
+
+    /* END SCREEN */
+    .end-screen {
+      display: none;
+      text-align: center;
+    }
+
+    .end-screen h2 {
+      font-size: 28px;
+      color: #667eea;
+      margin-bottom: 16px;
+    }
+
+    .score-display {
+      font-size: 36px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .score-message {
+      font-size: 15px;
+      color: #666;
+      margin-bottom: 24px;
+    }
+
+    /* REVIEW SCREEN */
+    .review-screen {
+      display: none;
+    }
+
+    .review-header {
+      font-size: 20px;
+      color: #667eea;
+      font-weight: bold;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .review-item {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 14px;
       background: #fafafa;
+    }
+
+    .review-item-title {
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 8px;
       font-size: 14px;
     }
-    .review-title {
-      font-weight: bold;
-      color: #1976d2;
-      margin-bottom: 9px;
+
+    .review-item-passage {
+      background: #f0f7ff;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 8px;
+      line-height: 1.4;
+      max-height: 120px;
+      overflow-y: auto;
     }
-    .review-user-answer {
-      color: #d32f2f;
+
+    .review-item-question {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 8px;
+      line-height: 1.5;
     }
-    .review-correct-answer {
-      color: #167c32;
+
+    .review-answer {
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .review-answer.user {
+      color: #f5222d;
+    }
+
+    .review-answer.correct {
+      color: #28a745;
+    }
+
+    .back-button {
+      width: 100%;
+      margin-top: 16px;
+    }
+
+    /* SCROLLBAR STYLING */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    @media (max-width: 480px) {
+      .main-container {
+        border-radius: 0;
+        max-height: 100vh;
+      }
+
+      .header {
+        padding: 16px 12px;
+      }
+
+      .header h1 {
+        font-size: 20px;
+      }
+
+      .content {
+        padding: 16px 12px;
+      }
+
+      .option-button {
+        font-size: 14px;
+        padding: 12px 12px;
+      }
+
+      .question-text {
+        font-size: 15px;
+      }
+
+      .btn {
+        font-size: 14px;
+        padding: 10px 14px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="quiz-panel">
-      <div id="startScreen">
-        <h2 style="margin-bottom:6px; color:#1976d2; font-size:26px;">EST Writing Quiz</h2>
-        <div style="font-size:17px; color:#333; margin-bottom:25px;">
-          Official Test Section I — 35 Minutes — 44 Questions<br />
-          <strong>All passages and MCQs included.</strong><br />
-          Mobile-friendly. Your answers are private.
+  <div class="main-container">
+    <div class="header">
+      <h1>EST I - Writing Quiz</h1>
+      <p>Official Test - 35 Minutes - 44 Questions</p>
+    </div>
+
+    <div class="content">
+      <!-- START SCREEN -->
+      <div class="start-screen" id="startScreen">
+        <h2>Welcome</h2>
+        <div class="info">
+          <strong>📝 Complete the EST Writing Exam</strong>
+          You have 35 minutes to answer all 44 multiple-choice questions.
+          <strong style="margin-top: 8px;">💡 Tip:</strong> Read each passage carefully. Questions follow each passage.
+          <strong style="margin-top: 8px;">⏱️ Timer:</strong> The countdown starts when you click Start.
         </div>
-        <button class="start-btn" id="startBtn">Start Quiz</button>
+        <button class="btn btn-primary btn-start" id="startBtn">Start Quiz</button>
       </div>
-      <div id="quizScreen" style="display:none;">
-        <div class="timer" id="timer"></div>
-        <div class="question-number" id="questionNumber"></div>
-        <div class="passage-text" id="passageText"></div>
+
+      <!-- QUIZ SCREEN -->
+      <div class="quiz-screen" id="quizScreen">
+        <div class="timer-bar">
+          <div class="timer-display" id="timer">35:00</div>
+          <div class="question-counter" id="counter">Question 1 of 44</div>
+        </div>
+        <div class="passage-box" id="passageBox"></div>
+        <div class="question-header" id="questionHeader"></div>
         <div class="question-text" id="questionText"></div>
-        <div class="options" id="optionsContainer"></div>
-        <div class="feedback" id="feedback"></div>
-        <div class="footer">
-          <div id="progress"></div>
-          <button class="next-btn" id="nextBtn" disabled>Next ▶</button>
+        <div class="options-group" id="optionsGroup"></div>
+        <div class="feedback-message" id="feedback"></div>
+        <div class="button-group">
+          <button class="btn btn-primary" id="nextBtn" disabled>Next →</button>
         </div>
       </div>
-      <div id="endScreen" style="display:none;">
-        <h2 style="color:#1976d2;">Quiz Complete!</h2>
-        <div id="scoreSummary" style="font-size:18px; margin-bottom:13px;"></div>
-        <button class="start-btn" id="reviewBtn">Review Wrong Answers</button>
-        <div class="review-section" id="reviewSection" style="display:none;"></div>
+
+      <!-- END SCREEN -->
+      <div class="end-screen" id="endScreen">
+        <h2>Quiz Complete!</h2>
+        <div class="score-display" id="scoreDisplay">0/0</div>
+        <div class="score-message" id="scoreMessage"></div>
+        <button class="btn btn-primary" id="reviewBtn">Review Wrong Answers</button>
+        <button class="btn btn-primary" style="background: #999; margin-top: 8px;" id="restartBtn">Start Over</button>
       </div>
-      <div id="timeOverScreen" style="display:none;">
-        <h2 style="color:#d32f2f;">Time's Up!</h2>
-        <div id="timeScore" style="font-size:17px; margin-bottom:12px;"></div>
-        <button class="start-btn" id="reviewBtn2">Review Wrong Answers</button>
-        <div class="review-section" id="reviewSection2" style="display:none;"></div>
+
+      <!-- REVIEW SCREEN -->
+      <div class="review-screen" id="reviewScreen">
+        <div class="review-header">Wrong Answers Review</div>
+        <div id="reviewList"></div>
+        <button class="btn btn-primary back-button" id="backBtn">Back to Results</button>
       </div>
     </div>
   </div>
+
   <script>
-    // ---------------------- DATA ----------------------
-    // To save space, only a portion shown here. Fill with all your 44 questions from previous completion!
-    const quizItems = [
+    // ==================== ALL 44 QUESTIONS DATA ====================
+    const quizData = [
       // PASSAGE 1 – Montessori
       {
-        type: "passage", passage: `PASSAGE 1 – The Montessori Method
-The lessons are individual, and brevity must be one of their chief characteristics...`
-      },
-      {
-        type: "question", passageIndex: 0,
-        question: "And in preparing the lessons which she is to give, the teacher must pay special attention to this point, counting and weighing the value of the words which she is to speak.\nWhich beginning is best?",
-        options: [
-          "NO CHANGE",
-          "But in preparing the lessons which she is to give",
-          "As well as preparing the lessons which she is to give",
-          "Frankly speaking, in preparing the lessons which she is to give"
-        ],
-        correctIndex: 0
-      },
-      // ...Do the same for all 44 questions: add passageIndex field (which passage above the question), and maintain order.
+        passage: `PASSAGE 1 – The Montessori Method
 
-      // (Other passages and questions omitted for brevity, use all 44 from previous answer!)
+The lessons are individual, and brevity must be one of their chief characteristics. Dante gives excellent advice to teachers when he says, "Let thy words be counted." The more carefully we cut away useless words, the more perfect will become the lesson. And in preparing the lessons which she is to give, the teacher must pay special attention to this point, counting and weighing the value of the words which she is to speak.
+
+Another characteristic quality of the lesson in the "Children's Houses" is its simplicity. It must be obtained of all that is not absolute truth. That the teacher must not lose herself in vain words, is included in the first quality of conciseness; this second, then, is closely related to the first: that is, the carefully chosen words must be the most simple it is possible to find, and must refer to the truth.
+
+The third quality of the lesson is its objectivity. Objectivity, opposite to subjectivity, remains essential when planning a lesson. There shall remain in evidence only the object to which she wishes to call the attention of the child. This brief and simple lesson must be considered by the teacher as an explanation of the object and of the use which the child can make of it.
+
+In the giving of such lessons the fundamental guide must be the method of observation, in which is included and understood the liberty of the child. And she must take great care not to offend the principles of liberty.
+
+For, if she has provoken the child to make an unnatural effort, she will no longer know what is the spontaneous activity of the child. If, therefore, the lesson rigorously prepared in this brevity, simplicity, and truth is not understood by the child, is not accepted by him as an explanation of the object, the teacher must be warned of two things: first, not to insist by repeating the lesson; and second, not to make the child feel that he has made a mistake, or that he is not understood. In doing so she will cause him to make an effort to understand, and will thus alter the natural state which must be used by her in making her psychological observation. A few examples may serve to illustrate this point.
+
+Let us suppose, for example, that the teacher thinks to teach a child the two colours, red and blue. She desires to attracting the attention of the child to the object. She says, therefore, "Look at this." Then, in order to teach the colours, she says, showing him the red, "This is red," raising her voice a little and pronouncing the word "red" slowly and clearly; then showing him the other colour, "This is blue." Losing track that the child has understood, she says to him, "Give me the red,"—"Give me the blue." Let us suppose that the child in following this last direction makes a mistake. The teacher does not repeat and does not insist; she smiles, gives the child a friendly caress and takes away the colours.`,
+        questions: [
+          {
+            q: "And in preparing the lessons which she is to give, the teacher must pay special attention to this point, counting and weighing the value of the words which she is to speak.\n\nWhich beginning is best?",
+            opts: ["NO CHANGE", "But in preparing the lessons which she is to give", "As well as preparing the lessons which she is to give", "Frankly speaking, in preparing the lessons which she is to give"],
+            ans: 0
+          },
+          {
+            q: "It must be ___ of all that is not absolute truth.\n\nWhich choice best replaces "obtained"?",
+            opts: ["obtained", "stripped", "removed", "rejected"],
+            ans: 1
+          },
+          {
+            q: "That the teacher must not lose herself in vain words, is included in the first quality of conciseness; this second, then, is closely related to the first…\n\nWhich choice most clearly identifies "this second"?",
+            opts: ["NO CHANGE", "conciseness, this second,", "conciseness—this second,", "conciseness … this second,"],
+            ans: 0
+          },
+          {
+            q: "Which of the following statements best explains objectivity when giving a lesson?",
+            opts: ["Objectivity, opposite to subjectivity, remains essential when planning a lesson.", "Objectivity can often be a fundamental aspect of teaching.", "Objectivity is the action of removing one's self from the subject at hand.", "The lesson must be presented in such a way that the personality of the teacher shall disappear."],
+            ans: 3
+          },
+          {
+            q: "The writer would like to insert this sentence:\n"So the teacher shall observe whether the child interests himself in the object, how he is interested in it, for how long, etc., even noticing the expression of his face."\n\nThe best placement is:",
+            opts: ["before sentence 1.", "before sentence 2.", "before sentence 3.", "after sentence 3."],
+            ans: 1
+          },
+          {
+            q: "For, if she ___ the child to make an unnatural effort, she will no longer know what is the spontaneous activity of the child.",
+            opts: ["has provoken", "had provoken", "provokes", "provoke"],
+            ans: 2
+          },
+          {
+            q: "…the teacher must be warned of two things: first, not to insist by repeating the ___ lesson; and second, not to make the child feel…",
+            opts: ["NO CHANGE", "lesson, and second,", "lesson and second,", "lesson— and second,"],
+            ans: 0
+          },
+          {
+            q: "Let us suppose, that the teacher ___ to teach a child the two colours, red and blue. Which choice best expresses the teacher's own motivation?",
+            opts: ["thinks", "wishes", "is asked", "needs"],
+            ans: 1
+          },
+          {
+            q: "She desires ___ attracting the attention of the child to the object.",
+            opts: ["to attracting", "attracting", "to attracts", "to attract"],
+            ans: 3
+          },
+          {
+            q: "___ that the child has understood, she says to him, "Give me the red,"—"Give me the blue."",
+            opts: ["Losing track", "To make sure", "Reiterating after", "With careful precision"],
+            ans: 1
+          },
+          {
+            q: "The teacher does not repeat and does not insist; she smiles, gives the child a friendly caress and takes away the colours.\n\nWhich choice uses the most appropriate punctuation?",
+            opts: ["NO CHANGE", "she smiles, gives the child, a friendly caress and takes away the colours.", "she smiles gives the child a friendly caress and takes away the colours.", "she smiles, gives the child a friendly caress, and takes away the colours."],
+            ans: 3
+          }
+        ]
+      },
+
+      // PASSAGE 2 – Music
+      {
+        passage: `PASSAGE 2 – Music
+
+Music deals first of all with feeling or emotion. But since emotion may be guided by the mind and transfused by the imagination since emotion is not a separate and isolated part of our being—so music may be so ordered by the mind and so transfused by the imagination as to become intellectual and imaginative. It is true that the greater part of the music produced and performed deals only with emotion, but this is equally true of literature. The popular novel is one tenth emotion, one tenth mind, and the rest imagination. Moreover, it is with music, though such illogical invention as one constantly finds in many popular novels would be intolerable in any music. Since there seems to be an incongruity between the statement that music has no definite meaning and the statement that it is intellectual, this leaves no room for reconciliation.
+
+We must first of all distinguish between the quality itself and the expression of the quality. A person may have a mind stored with wisdom and be completely what we call "intellectual," without ever expressing himself by a spoken or written word. His wisdom exists by itself and for itself, entirely separated from their expression. If he expresses himself, and with skill, we call that expression literature, but, in any case, it remains wisdom. And what is wisdom? It is what Mr. Eliot describes a liberal education to be—"a state of mind:" it is the fusion of knowledge with experience, with feeling, and imagination.
+
+Now words are symbols which diminish in their efficacy as they try to compass feeling and imagination. If the wise man is cold, he can say, "I am cold:" but if he wishes to tell you of his idea of God, he has no words adequate for the purpose, because he is dealing with something which is not in the domain of knowledge alone—which he can feel, or perhaps imagine, but cannot define. The reason alone never even touches the far-away circle of that perfection which we believe to exist, and the subtle inner relations between man and the visible and invisible world refuse to be harnessed to language. For these he finds expression in some form of beauty. "The beautiful," says Goethe, "is a manifestation of the secret laws of nature which, but for this appearance, had been forever concealed from us."
+
+So we say that in wisdom the qualities we call insight, feeling, and imagination must find for themselves some more plastic medium of expression than language. And when that plastic medium, though non-definitive, has those qualities of subjectivity, continuity, and form which are essential to all intellectual expression, we are justified in calling it "intellectual." Let us take for our specific illustration the first movement of the Ninth Symphony of Beethoven. It is impossible to imagine this as an expression of feeling only, untouched by thought or by imagination. The inevitable conclusion arrived at by any person who's understands it is that the feeling is absolutely controlled by the mind, and that it is imagination that gives it its extraordinary effect.`,
+        questions: [
+          {
+            q: "But since emotion may be guided by the mind and transfused by the imagination ___ emotion is not a separate and isolated part of our being—so music may be so ordered…",
+            opts: ["NO CHANGE", "since, emotion is not a separate and isolated part of our being—so", "since, emotion is not a separate and isolated part of our being so", "since—emotion is not a separate and isolated part of our being—so"],
+            ans: 3
+          },
+          {
+            q: "The popular novel is one tenth emotion, one tenth mind, and the rest imagination. ___ it is with music, though such illogical invention…",
+            opts: ["Moreover,", "So", "In fact", "Regardless"],
+            ans: 1
+          },
+          {
+            q: "Since there seems to be an incongruity between music having no definite meaning and being intellectual, ___.",
+            opts: ["this leaves no room for reconciliation.", "it has caused an even further gap.", "let us take a specific illustration and see if we cannot reconcile.", "reconciliation proves difficult."],
+            ans: 2
+          },
+          {
+            q: "Should the sentence "We must first of all distinguish…" be kept or deleted?",
+            opts: ["Kept, provides detailed support.", "Kept, introduces paragraph and transitions.", "Deleted, unrelated.", "Deleted, details misplaced."],
+            ans: 1
+          },
+          {
+            q: "His wisdom exists by itself, entirely separated from ___ expression.",
+            opts: ["NO CHANGE", "its'", "its", "it's"],
+            ans: 2
+          },
+          {
+            q: "It is the fusion of ___ knowledge with experience, with feeling, and imagination.",
+            opts: ["knowledge with experience, with feeling, and imagination.", "knowledge with experience, with feeling, and with imagination.", "knowledge with experience, feeling, and with imagination.", "knowledge with experience, feeling, and the imagination."],
+            ans: 1
+          },
+          {
+            q: "Now words are symbols which ___ in their efficacy as they try to compass feeling and imagination.",
+            opts: ["diminish", "change", "disrupt", "improve"],
+            ans: 0
+          },
+          {
+            q: "Should the quotation marks around "The beautiful" be removed?",
+            opts: ["Yes, represents inner thoughts.", "Yes, inconsistent with style.", "No, serve to break flow.", "No, symbolize word-for-word account."],
+            ans: 3
+          },
+          {
+            q: "…has those qualities of ___, continuity, and form which are essential…",
+            opts: ["subjectivity", "objectivity", "rarity", "unstructured"],
+            ans: 1
+          },
+          {
+            q: "The inevitable conclusion arrived at by any person ___ understands it…",
+            opts: ["who's", "which", "whom", "that"],
+            ans: 3
+          },
+          {
+            q: "Which choice best concludes and matches the author's style?",
+            opts: ["Is imagination the key?", "Music expresses what words cannot.", "That being said, music becomes a language through imagination…", "Expression peaks when involving music."],
+            ans: 2
+          }
+        ]
+      },
+
+      // PASSAGE 3 – Geographical Discovery
+      {
+        passage: `PASSAGE 3 – The Story of Geographical Discovery
+
+If one looks at the west coast of Australia one is struck by the large number of Dutch names which are jotted down the coast. There is Hoog Island, Diemen's Bay, Houtman's Abrolhos, De Wit land, and the Archipelago of Nuyts, besides Dirk Hartog's Island and Cape Leeuwin. To the extreme north we find the Gulf of Carpentaria, and to the extreme south the island which used to be called Van Diemen's Land. It is not altogether to be wondered at that almost to the middle of this century the land we now call Australia was tolerably well known as New Holland.`,
+        questions: [
+          {
+            q: "…mariners portulanos gave a rude yet ___ account of the littoral of Africa…",
+            opts: ["effective", "subjective", "unprecedented", "tactful"],
+            ans: 0
+          },
+          {
+            q: "…but they settled upon it, at Amina on the Guinea coast…",
+            opts: ["NO CHANGE", "it— at", "it. At", "it at"],
+            ans: 2
+          },
+          {
+            q: "…and afterwards celebrated by Milton…",
+            opts: ["NO CHANGE", "as time gradually passes by", "unknowingly", "certainly enough"],
+            ans: 0
+          },
+          {
+            q: "…in some maps of the sixteenth and 17th century…",
+            opts: ["NO CHANGE", "seventeenth", "seventh", "seventeen"],
+            ans: 1
+          },
+          {
+            q: "Best structure: We ___ terminated in three large lakes…",
+            opts: ["We, which can be scarcely other than Victoria, see it terminated in three large lakes.", "We see it, which can be scarcely other than Victoria, terminated in three large lakes.", "We see it terminated, which can be Victoria, in three large lakes.", "We see it terminated in three large lakes, which can be scarcely other than Victoria."],
+            ans: 0
+          },
+          {
+            q: "Sentence 5 should be placed:",
+            opts: ["where it is now", "before sentence 1", "after sentence 2", "after sentence 6"],
+            ans: 0
+          },
+          {
+            q: "…at least ___ the sources of the Nile.",
+            opts: ["with regard to", "in comparison to", "because of", "due to"],
+            ans: 0
+          },
+          {
+            q: "It is remarkable that all four rivers ___ had their course determined…",
+            opts: ["has", "had has", "have had", "had had"],
+            ans: 2
+          },
+          {
+            q: "It is not inappropriate that, ___ in the case of the Congo…",
+            opts: ["NO CHANGE", "except", "exempt", "expect"],
+            ans: 1
+          },
+          {
+            q: "What about the parentheses?",
+            opts: ["Keep. Nonrestrictive.", "Keep. Change in tone.", "Delete. Necessary.", "Delete. Wrong position."],
+            ans: 0
+          },
+          {
+            q: "…at least that seems to be the ___.",
+            opts: ["suggestion", "input", "explicit meaning", "uncertainty"],
+            ans: 0
+          }
+        ]
+      },
+
+      // PASSAGE 4 – Ice-Cave
+      {
+        passage: `PASSAGE 4 – Ice-Cave
+
+As we stood at the mouth of the low entrance, making final preparations for a plunge into the darkness, I perceived a strong cold current blowing out from the cave—sufficiently strong and cold to render knickerbocker stockings a very unavailing protection. While engaged in the discovery that this style of dress is not without its drawbacks, I found, to my surprise, that the direction of the current suddenly changed, and the cold blast which had before blown out of the cave, now blew almost as strongly in. The arch of entrance was so low, that the top was about on a level with my waist; so that our faces and the upper parts of our bodies were not exposed to the current, and the strangeness of the effect was thus considerably increased.`,
+        questions: [
+          {
+            q: "Best rewrite: "While engaged in the discovery that this style of dress is not without its drawbacks…"",
+            opts: ["NO CHANGE", "While engaged, I found, discovering drawbacks…", "While engaged in discovering, to my surprise, the direction changed…", "While engaged, to my surprise, discovering drawbacks…"],
+            ans: 0
+          },
+          {
+            q: "As a matter of curiosity, we lighted a ___, and placed it on the edge of the snow…",
+            opts: ["bougie", "bougie (capitalization)", "bougie (spelling)", "(bougie)"],
+            ans: 1
+          },
+          {
+            q: "…and placed ___ on the edge of the snow…",
+            opts: ["it", "its", "her", "their"],
+            ans: 0
+          },
+          {
+            q: "Keep or delete the portion about the experiment?",
+            opts: ["Keep. Provides necessary information.", "Keep. Creates link.", "Delete. Distracts.", "Delete. Unrelated."],
+            ans: 0
+          },
+          {
+            q: "…a storm might have raged outside without producing effect below like ___.",
+            opts: ["the terrorization of crows.", "a snowstorm hitting your house.", "a tornado hitting your home.", "being poisoned by a berry."],
+            ans: 2
+          },
+          {
+            q: "It would be difficult to explain, ___ it is not so difficult to see oscillation.",
+            opts: ["NO CHANGE", "because", "and", "but"],
+            ans: 3
+          },
+          {
+            q: "The author wants to express movement. Best choice?",
+            opts: ["oscillation", "hesitation", "immobility", "idleness"],
+            ans: 0
+          },
+          {
+            q: "Best intro to the next paragraph?",
+            opts: ["Ice-cave frozen.", "Difficult floor plan.", "We passed down through the archway and stood on the floor.", "Floor plan complex."],
+            ans: 2
+          },
+          {
+            q: "As our eyes became accustomed, we saw ___, an indistinct light…",
+            opts: ["someone", "something", "everyone", "everything"],
+            ans: 1
+          },
+          {
+            q: "Best emphasizes extent of exploration?",
+            opts: ["fathomed", "seen", "discerned", "glanced"],
+            ans: 0
+          },
+          {
+            q: "Most accurate for "…bottom of pit B"?",
+            opts: ["pit B", "section H", "section F", "section C"],
+            ans: 0
+          }
+        ]
+      }
     ];
 
-    // ------------------ STATE & RUNTIME ------------------
-    let currentIndex = 0;
-    let quizStarted = false;
-    let correctCount = 0;
-    let wrongs = []; // {index, userAnswer, correctIndex}
-    let timerInterval, timeLeft = 35*60; // seconds
+    // ==================== STATE ====================
+    let state = {
+      screen: 'start', // start, quiz, end, review
+      currentPassage: 0,
+      currentQuestion: 0,
+      score: 0,
+      userAnswers: [],
+      timeLeft: 35 * 60,
+      timerInterval: null,
+      currentPassageText: '',
+      totalQuestions: 0
+    };
 
-    const startScreen = document.getElementById("startScreen");
-    const quizScreen = document.getElementById("quizScreen");
-    const endScreen = document.getElementById("endScreen");
-    const timeOverScreen = document.getElementById("timeOverScreen");
+    // Calculate total questions
+    state.totalQuestions = quizData.reduce((sum, p) => sum + p.questions.length, 0);
 
-    const timerEl = document.getElementById("timer");
-    const passageTextEl = document.getElementById("passageText");
-    const questionNumberEl = document.getElementById("questionNumber");
-    const questionTextEl = document.getElementById("questionText");
-    const optionsContainerEl = document.getElementById("optionsContainer");
-    const feedbackEl = document.getElementById("feedback");
-    const progressEl = document.getElementById("progress");
-    const nextBtn = document.getElementById("nextBtn");
-    const scoreSummary = document.getElementById("scoreSummary");
-    const reviewBtn = document.getElementById("reviewBtn");
-    const reviewSection = document.getElementById("reviewSection");
-    const reviewBtn2 = document.getElementById("reviewBtn2");
-    const reviewSection2 = document.getElementById("reviewSection2");
-    const timeScore = document.getElementById("timeScore");
+    // ==================== DOM ELEMENTS ====================
+    const startScreen = document.getElementById('startScreen');
+    const quizScreen = document.getElementById('quizScreen');
+    const endScreen = document.getElementById('endScreen');
+    const reviewScreen = document.getElementById('reviewScreen');
 
-    // -------------------- START LOGIC --------------------
-    document.getElementById("startBtn").addEventListener("click", () => {
-      quizStarted = true;
-      currentIndex = 0;
-      correctCount = 0;
-      wrongs = [];
-      timeLeft = 35*60;
-      // Show quiz, hide start
-      startScreen.style.display = "none";
-      quizScreen.style.display = "";
-      endScreen.style.display = "none";
-      timeOverScreen.style.display = "none";
-      renderItem();
+    const timerDisplay = document.getElementById('timer');
+    const counterDisplay = document.getElementById('counter');
+    const passageBox = document.getElementById('passageBox');
+    const questionHeader = document.getElementById('questionHeader');
+    const questionText = document.getElementById('questionText');
+    const optionsGroup = document.getElementById('optionsGroup');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('nextBtn');
+
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const scoreMessage = document.getElementById('scoreMessage');
+    const reviewList = document.getElementById('reviewList');
+
+    // ==================== EVENTS ====================
+    document.getElementById('startBtn').addEventListener('click', startQuiz);
+    nextBtn.addEventListener('click', nextQuestion);
+    document.getElementById('reviewBtn').addEventListener('click', showReview);
+    document.getElementById('restartBtn').addEventListener('click', () => location.reload());
+    document.getElementById('reviewBtn2')?.addEventListener('click', showReview);
+    document.getElementById('backBtn').addEventListener('click', backToResults);
+
+    // ==================== FUNCTIONS ====================
+    function startQuiz() {
+      state.screen = 'quiz';
+      state.score = 0;
+      state.userAnswers = [];
+      state.currentPassage = 0;
+      state.currentQuestion = 0;
+      state.timeLeft = 35 * 60;
+
+      startScreen.style.display = 'none';
+      quizScreen.style.display = 'block';
+      endScreen.style.display = 'none';
+      reviewScreen.style.display = 'none';
+
       startTimer();
-    });
+      renderQuestion();
+    }
 
     function startTimer() {
-      updateTimer();
-      timerInterval = setInterval(() => {
-        timeLeft -= 1;
-        updateTimer();
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          finishQuiz("timeout");
+      updateTimerDisplay();
+      state.timerInterval = setInterval(() => {
+        state.timeLeft--;
+        updateTimerDisplay();
+        if (state.timeLeft <= 0) {
+          clearInterval(state.timerInterval);
+          endQuiz(true);
         }
       }, 1000);
     }
 
-    function updateTimer() {
-      const m = Math.floor(timeLeft / 60);
-      const s = timeLeft % 60;
-      timerEl.textContent = `Time: ${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    function updateTimerDisplay() {
+      const mins = Math.floor(state.timeLeft / 60);
+      const secs = state.timeLeft % 60;
+      timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     }
 
-    // ------------------ RENDER ------------------
-    function renderItem() {
-      feedbackEl.textContent = "";
-      feedbackEl.className = "feedback";
-      nextBtn.disabled = true;
+    function renderQuestion() {
+      const passage = quizData[state.currentPassage];
+      const question = passage.questions[state.currentQuestion];
 
-      // Find nearest passage above question
-      let passageIndex = 0;
-      let tempIndex = currentIndex;
-      while (tempIndex >= 0 && quizItems[tempIndex].type !== "passage") tempIndex--;
-      passageIndex = tempIndex;
-
-      // Set passage (always!)
-      passageTextEl.textContent = quizItems[passageIndex]?.passage || "";
-
-      // Question number
-      const questionsSoFar = quizItems.slice(0, currentIndex+1).filter(it => it.type === "question").length;
-      const totalQuestions = quizItems.filter(it => it.type === "question").length;
-
-      // If passage
-      if (quizItems[currentIndex].type === "passage") {
-        questionNumberEl.textContent = "Passage";
-        questionTextEl.textContent = "Read the passage, then press Next to begin the questions.";
-        optionsContainerEl.innerHTML = "";
-        progressEl.textContent = `Passage (${passageIndex+1}/${quizItems.filter(q=>q.type==='passage').length})`;
-        nextBtn.disabled = false;
+      if (!question) {
+        endQuiz(false);
         return;
       }
 
-      // Question
-      questionNumberEl.textContent = `Question ${questionsSoFar} of ${totalQuestions}`;
-      questionTextEl.textContent = quizItems[currentIndex].question;
-      optionsContainerEl.innerHTML = "";
+      state.currentPassageText = passage.passage;
 
-      quizItems[currentIndex].options.forEach((optText, idx) => {
-        const btn = document.createElement("button");
-        const label = String.fromCharCode(65+idx);
-        btn.textContent = `${label}) ${optText}`;
-        btn.className = "option-btn";
-        btn.onclick = ()=>handleAnswer(idx);
-        optionsContainerEl.appendChild(btn);
+      const totalQuestionsAnswered = state.userAnswers.length;
+      const qNum = totalQuestionsAnswered + 1;
+
+      questionHeader.textContent = `Question ${qNum}`;
+      passageBox.textContent = passage.passage;
+      questionText.textContent = question.q;
+      counterDisplay.textContent = `Question ${qNum} of ${state.totalQuestions}`;
+
+      optionsGroup.innerHTML = '';
+      question.opts.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-button';
+        btn.textContent = `${String.fromCharCode(65 + idx)}) ${opt}`;
+        btn.onclick = () => selectAnswer(idx);
+        optionsGroup.appendChild(btn);
       });
 
-      progressEl.textContent = `Question ${questionsSoFar} of ${totalQuestions}`;
+      feedback.textContent = '';
+      feedback.className = 'feedback-message';
+      nextBtn.disabled = true;
     }
 
-    let answeredCurrent = false;
-    function handleAnswer(userIndex) {
-      if (answeredCurrent) return;
-      answeredCurrent = true;
-      const item = quizItems[currentIndex];
-      const buttons = Array.from(document.getElementsByClassName("option-btn"));
-      buttons.forEach((btn, idx) => {
-        if (idx === item.correctIndex) btn.classList.add("correct");
-        if (idx === userIndex && idx !== item.correctIndex) btn.classList.add("incorrect");
-        btn.disabled = true;
-      });
-      if (userIndex === item.correctIndex) {
-        correctCount++;
-        feedbackEl.textContent = "Correct!";
-        feedbackEl.classList.add("correct");
-      } else {
-        feedbackEl.textContent = `Incorrect. Correct answer: ${String.fromCharCode(65+item.correctIndex)}.`;
-        feedbackEl.classList.add("incorrect");
-        wrongs.push({index: currentIndex, userAnswer: userIndex, correctIndex: item.correctIndex});
+    function selectAnswer(idx) {
+      const passage = quizData[state.currentPassage];
+      const question = passage.questions[state.currentQuestion];
+      const buttons = Array.from(optionsGroup.children);
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      buttons[question.ans].classList.add('correct');
+      if (idx !== question.ans) {
+        buttons[idx].classList.add('incorrect');
       }
+
+      if (idx === question.ans) {
+        state.score++;
+        feedback.textContent = '✓ Correct!';
+        feedback.classList.add('correct');
+      } else {
+        feedback.textContent = `✗ Incorrect. Correct answer: ${String.fromCharCode(65 + question.ans)}`;
+        feedback.classList.add('incorrect');
+      }
+
+      state.userAnswers.push({
+        passageIndex: state.currentPassage,
+        questionIndex: state.currentQuestion,
+        userAnswer: idx,
+        correctAnswer: question.ans,
+        correct: idx === question.ans
+      });
+
       nextBtn.disabled = false;
     }
 
-    nextBtn.onclick = function() {
-      answeredCurrent = false;
-      currentIndex++;
-      if (currentIndex >= quizItems.length) {
-        clearInterval(timerInterval);
-        finishQuiz("completed");
-        return;
-      }
-      renderItem();
-    };
+    function nextQuestion() {
+      const passage = quizData[state.currentPassage];
 
-    function finishQuiz(reason) {
-      quizScreen.style.display = "none";
-      if (reason === "timeout") {
-        timeOverScreen.style.display = "";
-        timeScore.textContent = `You answered ${correctCount} out of ${quizItems.filter(it => it.type === "question").length} before time ran out.`;
+      if (state.currentQuestion < passage.questions.length - 1) {
+        state.currentQuestion++;
       } else {
-        endScreen.style.display = "";
-        scoreSummary.textContent = `You scored ${correctCount} out of ${quizItems.filter(it => it.type === "question").length}.`;
+        if (state.currentPassage < quizData.length - 1) {
+          state.currentPassage++;
+          state.currentQuestion = 0;
+        } else {
+          endQuiz(false);
+          return;
+        }
       }
-      window.scrollTo(0,0);
+
+      renderQuestion();
     }
 
-    // ------------------ REVIEW MODE ------------------
-    reviewBtn.addEventListener("click", () => { showReview("normal"); });
-    reviewBtn2.addEventListener("click", () => { showReview("timeout"); });
+    function endQuiz(timedOut) {
+      clearInterval(state.timerInterval);
+      state.screen = 'end';
 
-    function showReview(target) {
-      const reviewSec = (target==="timeout") ? reviewSection2 : reviewSection;
-      reviewSec.innerHTML = "";
-      const passageCache = {};
-      wrongs.forEach(({index, userAnswer, correctIndex}, wIdx) => {
-        // Find passage
-        let passageIndex = index;
-        while (passageIndex >= 0 && quizItems[passageIndex].type !== "passage") passageIndex--;
-        const passage = quizItems[passageIndex]?.passage || "";
-        const item = quizItems[index];
+      quizScreen.style.display = 'none';
+      endScreen.style.display = 'block';
 
-        reviewSec.innerHTML += `
-          <div class="review-block">
-            <div class="review-title">Question ${wIdx+1}</div>
-            <div class="passage-text">${passage}</div>
-            <div><b>Q:</b> ${item.question}</div>
-            <div><span class="review-user-answer">Your answer:</span> ${String.fromCharCode(65+userAnswer)}) ${item.options[userAnswer] || "<i>no answer</i>"} </div>
-            <div><span class="review-correct-answer">Correct answer:</span> ${String.fromCharCode(65+correctIndex)}) ${item.options[correctIndex]}</div>
-          </div>
-        `;
+      scoreDisplay.textContent = `${state.score} / ${state.totalQuestions}`;
+      const pct = Math.round((state.score / state.totalQuestions) * 100);
+      scoreMessage.textContent = `You scored ${pct}% ${timedOut ? '(Time ran out)' : ''}`;
+    }
+
+    function showReview() {
+      state.screen = 'review';
+      endScreen.style.display = 'none';
+      reviewScreen.style.display = 'block';
+
+      reviewList.innerHTML = '';
+      let wrongCount = 0;
+
+      state.userAnswers.forEach((answer, idx) => {
+        if (!answer.correct) {
+          wrongCount++;
+          const passage = quizData[answer.passageIndex];
+          const question = passage.questions[answer.questionIndex];
+
+          const div = document.createElement('div');
+          div.className = 'review-item';
+          div.innerHTML = `
+            <div class="review-item-title">Wrong Answer #${wrongCount}</div>
+            <div class="review-item-passage">${passage.passage}</div>
+            <div class="review-item-question"><strong>Q:</strong> ${question.q}</div>
+            <div class="review-answer user"><strong>Your Answer:</strong> ${String.fromCharCode(65 + answer.userAnswer)}) ${question.opts[answer.userAnswer]}</div>
+            <div class="review-answer correct"><strong>Correct Answer:</strong> ${String.fromCharCode(65 + answer.correctAnswer)}) ${question.opts[answer.correctAnswer]}</div>
+          `;
+          reviewList.appendChild(div);
+        }
       });
-      reviewSec.style.display = "";
-      window.scrollTo(0, document.body.scrollHeight);
+
+      if (wrongCount === 0) {
+        reviewList.innerHTML = '<p style="text-align:center; color:#28a745; font-size:16px;">Perfect! No wrong answers.</p>';
+      }
+    }
+
+    function backToResults() {
+      state.screen = 'end';
+      endScreen.style.display = 'block';
+      reviewScreen.style.display = 'none';
     }
   </script>
 </body>
 </html>
+
+
