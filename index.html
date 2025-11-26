@@ -56,7 +56,6 @@
       padding: 20px 16px;
     }
 
-    /* START SCREEN */
     .start-screen {
       text-align: center;
     }
@@ -83,7 +82,6 @@
       margin-top: 8px;
     }
 
-    /* QUIZ SCREEN */
     .quiz-screen {
       display: none;
     }
@@ -96,6 +94,7 @@
       justify-content: space-between;
       align-items: center;
       font-weight: bold;
+      margin-bottom: 16px;
     }
 
     .timer-display {
@@ -159,10 +158,6 @@
       border-color: #667eea;
     }
 
-    .option-button:active:not(:disabled) {
-      transform: scale(0.98);
-    }
-
     .option-button.correct {
       background: #d4edda;
       border-color: #28a745;
@@ -177,7 +172,6 @@
 
     .option-button:disabled {
       cursor: default;
-      opacity: 0.95;
     }
 
     .feedback-message {
@@ -217,7 +211,7 @@
       color: white;
     }
 
-    .btn-primary:hover {
+    .btn-primary:hover:not(:disabled) {
       transform: translateY(-2px);
       box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
     }
@@ -225,7 +219,6 @@
     .btn-primary:disabled {
       opacity: 0.6;
       cursor: not-allowed;
-      transform: none;
     }
 
     .btn-start {
@@ -235,7 +228,6 @@
       margin-top: 24px;
     }
 
-    /* END SCREEN */
     .end-screen {
       display: none;
       text-align: center;
@@ -260,7 +252,6 @@
       margin-bottom: 24px;
     }
 
-    /* REVIEW SCREEN */
     .review-screen {
       display: none;
     }
@@ -325,7 +316,6 @@
       margin-top: 16px;
     }
 
-    /* SCROLLBAR STYLING */
     ::-webkit-scrollbar {
       width: 6px;
     }
@@ -339,10 +329,6 @@
       border-radius: 3px;
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-      background: #555;
-    }
-
     @media (max-width: 480px) {
       .main-container {
         border-radius: 0;
@@ -351,10 +337,6 @@
 
       .header {
         padding: 16px 12px;
-      }
-
-      .header h1 {
-        font-size: 20px;
       }
 
       .content {
@@ -385,19 +367,17 @@
     </div>
 
     <div class="content">
-      <!-- START SCREEN -->
       <div class="start-screen" id="startScreen">
         <h2>Welcome</h2>
         <div class="info">
           <strong>📝 Complete the EST Writing Exam</strong>
           You have 35 minutes to answer all 44 multiple-choice questions.
-          <strong style="margin-top: 8px;">💡 Tip:</strong> Read each passage carefully. Questions follow each passage.
-          <strong style="margin-top: 8px;">⏱️ Timer:</strong> The countdown starts when you click Start.
+          <strong style="margin-top: 8px;">💡 Tip:</strong> Read each passage carefully before answering questions.
+          <strong style="margin-top: 8px;">⏱️ Timer:</strong> Countdown starts when you click Start.
         </div>
         <button class="btn btn-primary btn-start" id="startBtn">Start Quiz</button>
       </div>
 
-      <!-- QUIZ SCREEN -->
       <div class="quiz-screen" id="quizScreen">
         <div class="timer-bar">
           <div class="timer-display" id="timer">35:00</div>
@@ -413,7 +393,6 @@
         </div>
       </div>
 
-      <!-- END SCREEN -->
       <div class="end-screen" id="endScreen">
         <h2>Quiz Complete!</h2>
         <div class="score-display" id="scoreDisplay">0/0</div>
@@ -422,7 +401,6 @@
         <button class="btn btn-primary" style="background: #999; margin-top: 8px;" id="restartBtn">Start Over</button>
       </div>
 
-      <!-- REVIEW SCREEN -->
       <div class="review-screen" id="reviewScreen">
         <div class="review-header">Wrong Answers Review</div>
         <div id="reviewList"></div>
@@ -432,9 +410,8 @@
   </div>
 
   <script>
-    // ==================== ALL 44 QUESTIONS DATA ====================
+    // ==================== COMPLETE QUIZ DATA ====================
     const quizData = [
-      // PASSAGE 1 – Montessori
       {
         passage: `PASSAGE 1 – The Montessori Method
 
@@ -450,65 +427,19 @@ For, if she has provoken the child to make an unnatural effort, she will no long
 
 Let us suppose, for example, that the teacher thinks to teach a child the two colours, red and blue. She desires to attracting the attention of the child to the object. She says, therefore, "Look at this." Then, in order to teach the colours, she says, showing him the red, "This is red," raising her voice a little and pronouncing the word "red" slowly and clearly; then showing him the other colour, "This is blue." Losing track that the child has understood, she says to him, "Give me the red,"—"Give me the blue." Let us suppose that the child in following this last direction makes a mistake. The teacher does not repeat and does not insist; she smiles, gives the child a friendly caress and takes away the colours.`,
         questions: [
-          {
-            q: "And in preparing the lessons which she is to give, the teacher must pay special attention to this point, counting and weighing the value of the words which she is to speak.\n\nWhich beginning is best?",
-            opts: ["NO CHANGE", "But in preparing the lessons which she is to give", "As well as preparing the lessons which she is to give", "Frankly speaking, in preparing the lessons which she is to give"],
-            ans: 0
-          },
-          {
-            q: "It must be ___ of all that is not absolute truth.\n\nWhich choice best replaces "obtained"?",
-            opts: ["obtained", "stripped", "removed", "rejected"],
-            ans: 1
-          },
-          {
-            q: "That the teacher must not lose herself in vain words, is included in the first quality of conciseness; this second, then, is closely related to the first…\n\nWhich choice most clearly identifies "this second"?",
-            opts: ["NO CHANGE", "conciseness, this second,", "conciseness—this second,", "conciseness … this second,"],
-            ans: 0
-          },
-          {
-            q: "Which of the following statements best explains objectivity when giving a lesson?",
-            opts: ["Objectivity, opposite to subjectivity, remains essential when planning a lesson.", "Objectivity can often be a fundamental aspect of teaching.", "Objectivity is the action of removing one's self from the subject at hand.", "The lesson must be presented in such a way that the personality of the teacher shall disappear."],
-            ans: 3
-          },
-          {
-            q: "The writer would like to insert this sentence:\n"So the teacher shall observe whether the child interests himself in the object, how he is interested in it, for how long, etc., even noticing the expression of his face."\n\nThe best placement is:",
-            opts: ["before sentence 1.", "before sentence 2.", "before sentence 3.", "after sentence 3."],
-            ans: 1
-          },
-          {
-            q: "For, if she ___ the child to make an unnatural effort, she will no longer know what is the spontaneous activity of the child.",
-            opts: ["has provoken", "had provoken", "provokes", "provoke"],
-            ans: 2
-          },
-          {
-            q: "…the teacher must be warned of two things: first, not to insist by repeating the ___ lesson; and second, not to make the child feel…",
-            opts: ["NO CHANGE", "lesson, and second,", "lesson and second,", "lesson— and second,"],
-            ans: 0
-          },
-          {
-            q: "Let us suppose, that the teacher ___ to teach a child the two colours, red and blue. Which choice best expresses the teacher's own motivation?",
-            opts: ["thinks", "wishes", "is asked", "needs"],
-            ans: 1
-          },
-          {
-            q: "She desires ___ attracting the attention of the child to the object.",
-            opts: ["to attracting", "attracting", "to attracts", "to attract"],
-            ans: 3
-          },
-          {
-            q: "___ that the child has understood, she says to him, "Give me the red,"—"Give me the blue."",
-            opts: ["Losing track", "To make sure", "Reiterating after", "With careful precision"],
-            ans: 1
-          },
-          {
-            q: "The teacher does not repeat and does not insist; she smiles, gives the child a friendly caress and takes away the colours.\n\nWhich choice uses the most appropriate punctuation?",
-            opts: ["NO CHANGE", "she smiles, gives the child, a friendly caress and takes away the colours.", "she smiles gives the child a friendly caress and takes away the colours.", "she smiles, gives the child a friendly caress, and takes away the colours."],
-            ans: 3
-          }
+          {q: "And in preparing the lessons which she is to give, the teacher must pay special attention to this point, counting and weighing the value of the words which she is to speak.\n\nWhich beginning is best?", opts: ["NO CHANGE", "But in preparing the lessons which she is to give", "As well as preparing the lessons which she is to give", "Frankly speaking, in preparing the lessons which she is to give"], ans: 0},
+          {q: "It must be ___ of all that is not absolute truth.", opts: ["obtained", "stripped", "removed", "rejected"], ans: 1},
+          {q: "That the teacher must not lose herself in vain words, is included in the first quality of conciseness; this second, then, is closely related to the first…", opts: ["NO CHANGE", "conciseness, this second,", "conciseness—this second,", "conciseness … this second,"], ans: 0},
+          {q: "Which of the following statements best explains objectivity?", opts: ["Objectivity, opposite to subjectivity, remains essential when planning a lesson.", "Objectivity can often be a fundamental aspect of teaching.", "Objectivity is the action of removing one's self from the subject at hand.", "The lesson must be presented in such a way that the personality of the teacher shall disappear."], ans: 3},
+          {q: "The writer would like to insert this sentence: 'So the teacher shall observe whether the child interests himself in the object, how he is interested in it, for how long, etc., even noticing the expression of his face.' The best placement is:", opts: ["before sentence 1.", "before sentence 2.", "before sentence 3.", "after sentence 3."], ans: 1},
+          {q: "For, if she ___ the child to make an unnatural effort…", opts: ["has provoken", "had provoken", "provokes", "provoke"], ans: 2},
+          {q: "…the teacher must be warned of two things: first, not to insist by repeating the ___ lesson; and second…", opts: ["NO CHANGE", "lesson, and second,", "lesson and second,", "lesson— and second,"], ans: 0},
+          {q: "Let us suppose, that the teacher ___ to teach a child the two colours, red and blue. Which choice best expresses the teacher's own motivation?", opts: ["thinks", "wishes", "is asked", "needs"], ans: 1},
+          {q: "She desires ___ attracting the attention of the child to the object.", opts: ["to attracting", "attracting", "to attracts", "to attract"], ans: 3},
+          {q: "___ that the child has understood, she says to him, 'Give me the red,'—'Give me the blue.'", opts: ["Losing track", "To make sure", "Reiterating after", "With careful precision"], ans: 1},
+          {q: "The teacher does not repeat and does not insist; she smiles, gives the child a friendly caress and takes away the colours. Which choice uses the most appropriate punctuation?", opts: ["NO CHANGE", "she smiles, gives the child, a friendly caress and takes away the colours.", "she smiles gives the child a friendly caress and takes away the colours.", "she smiles, gives the child a friendly caress, and takes away the colours."], ans: 3}
         ]
       },
-
-      // PASSAGE 2 – Music
       {
         passage: `PASSAGE 2 – Music
 
@@ -520,210 +451,70 @@ Now words are symbols which diminish in their efficacy as they try to compass fe
 
 So we say that in wisdom the qualities we call insight, feeling, and imagination must find for themselves some more plastic medium of expression than language. And when that plastic medium, though non-definitive, has those qualities of subjectivity, continuity, and form which are essential to all intellectual expression, we are justified in calling it "intellectual." Let us take for our specific illustration the first movement of the Ninth Symphony of Beethoven. It is impossible to imagine this as an expression of feeling only, untouched by thought or by imagination. The inevitable conclusion arrived at by any person who's understands it is that the feeling is absolutely controlled by the mind, and that it is imagination that gives it its extraordinary effect.`,
         questions: [
-          {
-            q: "But since emotion may be guided by the mind and transfused by the imagination ___ emotion is not a separate and isolated part of our being—so music may be so ordered…",
-            opts: ["NO CHANGE", "since, emotion is not a separate and isolated part of our being—so", "since, emotion is not a separate and isolated part of our being so", "since—emotion is not a separate and isolated part of our being—so"],
-            ans: 3
-          },
-          {
-            q: "The popular novel is one tenth emotion, one tenth mind, and the rest imagination. ___ it is with music, though such illogical invention…",
-            opts: ["Moreover,", "So", "In fact", "Regardless"],
-            ans: 1
-          },
-          {
-            q: "Since there seems to be an incongruity between music having no definite meaning and being intellectual, ___.",
-            opts: ["this leaves no room for reconciliation.", "it has caused an even further gap.", "let us take a specific illustration and see if we cannot reconcile.", "reconciliation proves difficult."],
-            ans: 2
-          },
-          {
-            q: "Should the sentence "We must first of all distinguish…" be kept or deleted?",
-            opts: ["Kept, provides detailed support.", "Kept, introduces paragraph and transitions.", "Deleted, unrelated.", "Deleted, details misplaced."],
-            ans: 1
-          },
-          {
-            q: "His wisdom exists by itself, entirely separated from ___ expression.",
-            opts: ["NO CHANGE", "its'", "its", "it's"],
-            ans: 2
-          },
-          {
-            q: "It is the fusion of ___ knowledge with experience, with feeling, and imagination.",
-            opts: ["knowledge with experience, with feeling, and imagination.", "knowledge with experience, with feeling, and with imagination.", "knowledge with experience, feeling, and with imagination.", "knowledge with experience, feeling, and the imagination."],
-            ans: 1
-          },
-          {
-            q: "Now words are symbols which ___ in their efficacy as they try to compass feeling and imagination.",
-            opts: ["diminish", "change", "disrupt", "improve"],
-            ans: 0
-          },
-          {
-            q: "Should the quotation marks around "The beautiful" be removed?",
-            opts: ["Yes, represents inner thoughts.", "Yes, inconsistent with style.", "No, serve to break flow.", "No, symbolize word-for-word account."],
-            ans: 3
-          },
-          {
-            q: "…has those qualities of ___, continuity, and form which are essential…",
-            opts: ["subjectivity", "objectivity", "rarity", "unstructured"],
-            ans: 1
-          },
-          {
-            q: "The inevitable conclusion arrived at by any person ___ understands it…",
-            opts: ["who's", "which", "whom", "that"],
-            ans: 3
-          },
-          {
-            q: "Which choice best concludes and matches the author's style?",
-            opts: ["Is imagination the key?", "Music expresses what words cannot.", "That being said, music becomes a language through imagination…", "Expression peaks when involving music."],
-            ans: 2
-          }
+          {q: "But since emotion may be guided by the mind and transfused by the imagination ___ emotion is not a separate and isolated part of our being—so music may be so ordered…", opts: ["NO CHANGE", "since, emotion is not a separate and isolated part of our being—so", "since, emotion is not a separate and isolated part of our being so", "since—emotion is not a separate and isolated part of our being—so"], ans: 3},
+          {q: "The popular novel is one tenth emotion, one tenth mind, and the rest imagination. ___ it is with music, though such illogical invention…", opts: ["Moreover,", "So", "In fact", "Regardless"], ans: 1},
+          {q: "Since there seems to be an incongruity between music having no definite meaning and being intellectual, ___.", opts: ["this leaves no room for reconciliation.", "it has caused an even further gap.", "let us take a specific illustration and see if we cannot reconcile.", "reconciliation proves difficult."], ans: 2},
+          {q: "Should the sentence 'We must first of all distinguish...' be kept or deleted?", opts: ["Kept, provides detailed support.", "Kept, introduces paragraph and transitions.", "Deleted, unrelated.", "Deleted, details misplaced."], ans: 1},
+          {q: "His wisdom exists by itself, entirely separated from ___ expression.", opts: ["NO CHANGE", "its'", "its", "it's"], ans: 2},
+          {q: "It is the fusion of ___ knowledge with experience, with feeling, and imagination.", opts: ["knowledge with experience, with feeling, and imagination.", "knowledge with experience, with feeling, and with imagination.", "knowledge with experience, feeling, and with imagination.", "knowledge with experience, feeling, and the imagination."], ans: 1},
+          {q: "Now words are symbols which ___ in their efficacy as they try to compass feeling and imagination.", opts: ["diminish", "change", "disrupt", "improve"], ans: 0},
+          {q: "Should the quotation marks around 'The beautiful' be removed?", opts: ["Yes, represents inner thoughts.", "Yes, inconsistent with style.", "No, serve to break flow.", "No, symbolize word-for-word account."], ans: 3},
+          {q: "…has those qualities of ___, continuity, and form which are essential…", opts: ["subjectivity", "objectivity", "rarity", "unstructured"], ans: 1},
+          {q: "The inevitable conclusion arrived at by any person ___ understands it…", opts: ["who's", "which", "whom", "that"], ans: 3},
+          {q: "Which choice best concludes and matches the author's style?", opts: ["Is imagination the key?", "Music expresses what words cannot.", "That being said, music becomes a language through imagination…", "Expression peaks when involving music."], ans: 2}
         ]
       },
-
-      // PASSAGE 3 – Geographical Discovery
       {
         passage: `PASSAGE 3 – The Story of Geographical Discovery
 
-If one looks at the west coast of Australia one is struck by the large number of Dutch names which are jotted down the coast. There is Hoog Island, Diemen's Bay, Houtman's Abrolhos, De Wit land, and the Archipelago of Nuyts, besides Dirk Hartog's Island and Cape Leeuwin. To the extreme north we find the Gulf of Carpentaria, and to the extreme south the island which used to be called Van Diemen's Land. It is not altogether to be wondered at that almost to the middle of this century the land we now call Australia was tolerably well known as New Holland.`,
+If one looks at the west coast of Australia one is struck by the large number of Dutch names which are jotted down the coast. There is Hoog Island, Diemen's Bay, Houtman's Abrolhos, De Wit land, and the Archipelago of Nuyts, besides Dirk Hartog's Island and Cape Leeuwin. To the extreme north we find the Gulf of Carpentaria, and to the extreme south the island which used to be called Van Diemen's Land. It is not altogether to be wondered at that almost to the middle of this century the land we now call Australia was tolerably well known as New Holland. The Portuguese and Dutch had made considerable progress in delineating its coast. The Dutch ships which came in from the East Indies to the Cape of Good Hope were for many years in the habit of ranging down the western coast, and at different seasons of the year the whole of that coast had been fairly well explored. It was on a coast thus familiar to mariners that no permanent settlement was made until comparatively recent times.`,
         questions: [
-          {
-            q: "…mariners portulanos gave a rude yet ___ account of the littoral of Africa…",
-            opts: ["effective", "subjective", "unprecedented", "tactful"],
-            ans: 0
-          },
-          {
-            q: "…but they settled upon it, at Amina on the Guinea coast…",
-            opts: ["NO CHANGE", "it— at", "it. At", "it at"],
-            ans: 2
-          },
-          {
-            q: "…and afterwards celebrated by Milton…",
-            opts: ["NO CHANGE", "as time gradually passes by", "unknowingly", "certainly enough"],
-            ans: 0
-          },
-          {
-            q: "…in some maps of the sixteenth and 17th century…",
-            opts: ["NO CHANGE", "seventeenth", "seventh", "seventeen"],
-            ans: 1
-          },
-          {
-            q: "Best structure: We ___ terminated in three large lakes…",
-            opts: ["We, which can be scarcely other than Victoria, see it terminated in three large lakes.", "We see it, which can be scarcely other than Victoria, terminated in three large lakes.", "We see it terminated, which can be Victoria, in three large lakes.", "We see it terminated in three large lakes, which can be scarcely other than Victoria."],
-            ans: 0
-          },
-          {
-            q: "Sentence 5 should be placed:",
-            opts: ["where it is now", "before sentence 1", "after sentence 2", "after sentence 6"],
-            ans: 0
-          },
-          {
-            q: "…at least ___ the sources of the Nile.",
-            opts: ["with regard to", "in comparison to", "because of", "due to"],
-            ans: 0
-          },
-          {
-            q: "It is remarkable that all four rivers ___ had their course determined…",
-            opts: ["has", "had has", "have had", "had had"],
-            ans: 2
-          },
-          {
-            q: "It is not inappropriate that, ___ in the case of the Congo…",
-            opts: ["NO CHANGE", "except", "exempt", "expect"],
-            ans: 1
-          },
-          {
-            q: "What about the parentheses?",
-            opts: ["Keep. Nonrestrictive.", "Keep. Change in tone.", "Delete. Necessary.", "Delete. Wrong position."],
-            ans: 0
-          },
-          {
-            q: "…at least that seems to be the ___.",
-            opts: ["suggestion", "input", "explicit meaning", "uncertainty"],
-            ans: 0
-          }
+          {q: "…mariners portulanos gave a rude yet ___ account of the littoral of Africa…", opts: ["effective", "subjective", "unprecedented", "tactful"], ans: 0},
+          {q: "…but they settled upon it, at Amina on the Guinea coast…", opts: ["NO CHANGE", "it— at", "it. At", "it at"], ans: 2},
+          {q: "…and afterwards celebrated by Milton…", opts: ["NO CHANGE", "as time gradually passes by", "unknowingly", "certainly enough"], ans: 0},
+          {q: "…in some maps of the sixteenth and 17th century…", opts: ["NO CHANGE", "seventeenth", "seventh", "seventeen"], ans: 1},
+          {q: "Best structure: We ___ terminated in three large lakes…", opts: ["We, which can be scarcely other than Victoria, see it terminated in three large lakes.", "We see it, which can be scarcely other than Victoria, terminated in three large lakes.", "We see it terminated, which can be Victoria, in three large lakes.", "We see it terminated in three large lakes, which can be scarcely other than Victoria."], ans: 0},
+          {q: "Sentence 5 should be placed:", opts: ["where it is now", "before sentence 1", "after sentence 2", "after sentence 6"], ans: 0},
+          {q: "…at least ___ the sources of the Nile.", opts: ["with regard to", "in comparison to", "because of", "due to"], ans: 0},
+          {q: "It is remarkable that all four rivers ___ had their course determined…", opts: ["has", "had has", "have had", "had had"], ans: 2},
+          {q: "It is not inappropriate that, ___ in the case of the Congo…", opts: ["NO CHANGE", "except", "exempt", "expect"], ans: 1},
+          {q: "What about the parentheses?", opts: ["Keep. Nonrestrictive.", "Keep. Change in tone.", "Delete. Necessary.", "Delete. Wrong position."], ans: 0},
+          {q: "…at least that seems to be the ___.", opts: ["suggestion", "input", "explicit meaning", "uncertainty"], ans: 0}
         ]
       },
-
-      // PASSAGE 4 – Ice-Cave
       {
         passage: `PASSAGE 4 – Ice-Cave
 
-As we stood at the mouth of the low entrance, making final preparations for a plunge into the darkness, I perceived a strong cold current blowing out from the cave—sufficiently strong and cold to render knickerbocker stockings a very unavailing protection. While engaged in the discovery that this style of dress is not without its drawbacks, I found, to my surprise, that the direction of the current suddenly changed, and the cold blast which had before blown out of the cave, now blew almost as strongly in. The arch of entrance was so low, that the top was about on a level with my waist; so that our faces and the upper parts of our bodies were not exposed to the current, and the strangeness of the effect was thus considerably increased.`,
+As we stood at the mouth of the low entrance, making final preparations for a plunge into the darkness, I perceived a strong cold current blowing out from the cave—sufficiently strong and cold to render knickerbocker stockings a very unavailing protection. While engaged in the discovery that this style of dress is not without its drawbacks, I found, to my surprise, that the direction of the current suddenly changed, and the cold blast which had before blown out of the cave, now blew almost as strongly in. The arch of entrance was so low, that the top was about on a level with my waist; so that our faces and the upper parts of our bodies were not exposed to the current, and the strangeness of the effect was thus considerably increased. As a matter of curiosity, we lighted a bougie, and placed it on the edge of the snow, and were much surprised to find that it melted very slowly, and the snow actually melted faster on the side furthest from the flame!`,
         questions: [
-          {
-            q: "Best rewrite: "While engaged in the discovery that this style of dress is not without its drawbacks…"",
-            opts: ["NO CHANGE", "While engaged, I found, discovering drawbacks…", "While engaged in discovering, to my surprise, the direction changed…", "While engaged, to my surprise, discovering drawbacks…"],
-            ans: 0
-          },
-          {
-            q: "As a matter of curiosity, we lighted a ___, and placed it on the edge of the snow…",
-            opts: ["bougie", "bougie (capitalization)", "bougie (spelling)", "(bougie)"],
-            ans: 1
-          },
-          {
-            q: "…and placed ___ on the edge of the snow…",
-            opts: ["it", "its", "her", "their"],
-            ans: 0
-          },
-          {
-            q: "Keep or delete the portion about the experiment?",
-            opts: ["Keep. Provides necessary information.", "Keep. Creates link.", "Delete. Distracts.", "Delete. Unrelated."],
-            ans: 0
-          },
-          {
-            q: "…a storm might have raged outside without producing effect below like ___.",
-            opts: ["the terrorization of crows.", "a snowstorm hitting your house.", "a tornado hitting your home.", "being poisoned by a berry."],
-            ans: 2
-          },
-          {
-            q: "It would be difficult to explain, ___ it is not so difficult to see oscillation.",
-            opts: ["NO CHANGE", "because", "and", "but"],
-            ans: 3
-          },
-          {
-            q: "The author wants to express movement. Best choice?",
-            opts: ["oscillation", "hesitation", "immobility", "idleness"],
-            ans: 0
-          },
-          {
-            q: "Best intro to the next paragraph?",
-            opts: ["Ice-cave frozen.", "Difficult floor plan.", "We passed down through the archway and stood on the floor.", "Floor plan complex."],
-            ans: 2
-          },
-          {
-            q: "As our eyes became accustomed, we saw ___, an indistinct light…",
-            opts: ["someone", "something", "everyone", "everything"],
-            ans: 1
-          },
-          {
-            q: "Best emphasizes extent of exploration?",
-            opts: ["fathomed", "seen", "discerned", "glanced"],
-            ans: 0
-          },
-          {
-            q: "Most accurate for "…bottom of pit B"?",
-            opts: ["pit B", "section H", "section F", "section C"],
-            ans: 0
-          }
+          {q: "Best rewrite: 'While engaged in the discovery that this style of dress is not without its drawbacks…'", opts: ["NO CHANGE", "While engaged, I found, discovering drawbacks…", "While engaged in discovering, to my surprise, the direction changed…", "While engaged, to my surprise, discovering drawbacks…"], ans: 0},
+          {q: "As a matter of curiosity, we lighted a ___, and placed it on the edge of the snow…", opts: ["bougie", "bougie (capitalization)", "bougie (spelling)", "(bougie)"], ans: 1},
+          {q: "…and placed ___ on the edge of the snow…", opts: ["it", "its", "her", "their"], ans: 0},
+          {q: "Keep or delete the portion about the experiment?", opts: ["Keep. Provides necessary information.", "Keep. Creates link.", "Delete. Distracts.", "Delete. Unrelated."], ans: 0},
+          {q: "…a storm might have raged outside without producing effect below like ___.", opts: ["the terrorization of crows.", "a snowstorm hitting your house.", "a tornado hitting your home.", "being poisoned by a berry."], ans: 2},
+          {q: "It would be difficult to explain, ___ it is not so difficult to see oscillation.", opts: ["NO CHANGE", "because", "and", "but"], ans: 3},
+          {q: "The author wants to express movement. Best choice?", opts: ["oscillation", "hesitation", "immobility", "idleness"], ans: 0},
+          {q: "Best intro to the next paragraph?", opts: ["Ice-cave frozen.", "Difficult floor plan.", "We passed down through the archway and stood on the floor.", "Floor plan complex."], ans: 2},
+          {q: "As our eyes became accustomed, we saw ___, an indistinct light…", opts: ["someone", "something", "everyone", "everything"], ans: 1},
+          {q: "Best emphasizes extent of exploration?", opts: ["fathomed", "seen", "discerned", "glanced"], ans: 0},
+          {q: "Most accurate for '…bottom of pit B'?", opts: ["pit B", "section H", "section F", "section C"], ans: 0}
         ]
       }
     ];
 
     // ==================== STATE ====================
     let state = {
-      screen: 'start', // start, quiz, end, review
+      screen: 'start',
       currentPassage: 0,
       currentQuestion: 0,
       score: 0,
       userAnswers: [],
       timeLeft: 35 * 60,
       timerInterval: null,
-      currentPassageText: '',
-      totalQuestions: 0
+      totalQuestions: 44
     };
 
-    // Calculate total questions
-    state.totalQuestions = quizData.reduce((sum, p) => sum + p.questions.length, 0);
-
-    // ==================== DOM ELEMENTS ====================
+    // ==================== DOM ====================
     const startScreen = document.getElementById('startScreen');
     const quizScreen = document.getElementById('quizScreen');
     const endScreen = document.getElementById('endScreen');
@@ -737,7 +528,6 @@ As we stood at the mouth of the low entrance, making final preparations for a pl
     const optionsGroup = document.getElementById('optionsGroup');
     const feedback = document.getElementById('feedback');
     const nextBtn = document.getElementById('nextBtn');
-
     const scoreDisplay = document.getElementById('scoreDisplay');
     const scoreMessage = document.getElementById('scoreMessage');
     const reviewList = document.getElementById('reviewList');
@@ -747,11 +537,11 @@ As we stood at the mouth of the low entrance, making final preparations for a pl
     nextBtn.addEventListener('click', nextQuestion);
     document.getElementById('reviewBtn').addEventListener('click', showReview);
     document.getElementById('restartBtn').addEventListener('click', () => location.reload());
-    document.getElementById('reviewBtn2')?.addEventListener('click', showReview);
     document.getElementById('backBtn').addEventListener('click', backToResults);
 
     // ==================== FUNCTIONS ====================
     function startQuiz() {
+      console.log('START QUIZ CLICKED');
       state.screen = 'quiz';
       state.score = 0;
       state.userAnswers = [];
@@ -788,17 +578,25 @@ As we stood at the mouth of the low entrance, making final preparations for a pl
 
     function renderQuestion() {
       const passage = quizData[state.currentPassage];
-      const question = passage.questions[state.currentQuestion];
-
-      if (!question) {
+      if (!passage) {
         endQuiz(false);
         return;
       }
 
-      state.currentPassageText = passage.passage;
+      const question = passage.questions[state.currentQuestion];
+      if (!question) {
+        // Move to next passage
+        state.currentPassage++;
+        state.currentQuestion = 0;
+        if (state.currentPassage < quizData.length) {
+          renderQuestion();
+        } else {
+          endQuiz(false);
+        }
+        return;
+      }
 
-      const totalQuestionsAnswered = state.userAnswers.length;
-      const qNum = totalQuestionsAnswered + 1;
+      const qNum = state.userAnswers.length + 1;
 
       questionHeader.textContent = `Question ${qNum}`;
       passageBox.textContent = passage.passage;
@@ -810,7 +608,7 @@ As we stood at the mouth of the low entrance, making final preparations for a pl
         const btn = document.createElement('button');
         btn.className = 'option-button';
         btn.textContent = `${String.fromCharCode(65 + idx)}) ${opt}`;
-        btn.onclick = () => selectAnswer(idx);
+        btn.onclick = () => selectAnswer(idx, question.ans);
         optionsGroup.appendChild(btn);
       });
 
@@ -819,24 +617,22 @@ As we stood at the mouth of the low entrance, making final preparations for a pl
       nextBtn.disabled = true;
     }
 
-    function selectAnswer(idx) {
-      const passage = quizData[state.currentPassage];
-      const question = passage.questions[state.currentQuestion];
+    function selectAnswer(idx, correctAns) {
       const buttons = Array.from(optionsGroup.children);
 
       buttons.forEach(btn => btn.disabled = true);
 
-      buttons[question.ans].classList.add('correct');
-      if (idx !== question.ans) {
+      buttons[correctAns].classList.add('correct');
+      if (idx !== correctAns) {
         buttons[idx].classList.add('incorrect');
       }
 
-      if (idx === question.ans) {
+      if (idx === correctAns) {
         state.score++;
         feedback.textContent = '✓ Correct!';
         feedback.classList.add('correct');
       } else {
-        feedback.textContent = `✗ Incorrect. Correct answer: ${String.fromCharCode(65 + question.ans)}`;
+        feedback.textContent = `✗ Incorrect. Correct answer: ${String.fromCharCode(65 + correctAns)}`;
         feedback.classList.add('incorrect');
       }
 
@@ -844,8 +640,8 @@ As we stood at the mouth of the low entrance, making final preparations for a pl
         passageIndex: state.currentPassage,
         questionIndex: state.currentQuestion,
         userAnswer: idx,
-        correctAnswer: question.ans,
-        correct: idx === question.ans
+        correctAnswer: correctAns,
+        correct: idx === correctAns
       });
 
       nextBtn.disabled = false;
@@ -856,17 +652,16 @@ As we stood at the mouth of the low entrance, making final preparations for a pl
 
       if (state.currentQuestion < passage.questions.length - 1) {
         state.currentQuestion++;
+        renderQuestion();
       } else {
         if (state.currentPassage < quizData.length - 1) {
           state.currentPassage++;
           state.currentQuestion = 0;
+          renderQuestion();
         } else {
           endQuiz(false);
-          return;
         }
       }
-
-      renderQuestion();
     }
 
     function endQuiz(timedOut) {
@@ -889,7 +684,7 @@ As we stood at the mouth of the low entrance, making final preparations for a pl
       reviewList.innerHTML = '';
       let wrongCount = 0;
 
-      state.userAnswers.forEach((answer, idx) => {
+      state.userAnswers.forEach((answer) => {
         if (!answer.correct) {
           wrongCount++;
           const passage = quizData[answer.passageIndex];
@@ -909,7 +704,7 @@ As we stood at the mouth of the low entrance, making final preparations for a pl
       });
 
       if (wrongCount === 0) {
-        reviewList.innerHTML = '<p style="text-align:center; color:#28a745; font-size:16px;">Perfect! No wrong answers.</p>';
+        reviewList.innerHTML = '<p style="text-align:center; color:#28a745; font-size:16px;">Perfect! No wrong answers. 🎉</p>';
       }
     }
 
@@ -921,5 +716,4 @@ As we stood at the mouth of the low entrance, making final preparations for a pl
   </script>
 </body>
 </html>
-
 
